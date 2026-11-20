@@ -1,0 +1,35 @@
+{
+  "name": "walled-ai-dlp-guard",
+  "version": "1.0.0",
+  "description": "Walled DLP Guard: desktop DLP for ChatGPT and Perplexity (prompt + file upload inspection with native confirmation dialogs)",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/build-extension.mjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "install-host": "node dist/agent/cli.js install",
+    "fixtures": "node scripts/make-fixtures.mjs",
+    "test:e2e": "npm run build && node --test tests/e2e/extension.e2e.mjs"
+  },
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@napi-rs/canvas": "^1.1.1",
+    "@tesseract.js-data/eng": "^1.0.0",
+    "pdfjs-dist": "^6.5.438",
+    "tesseract.js": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.3.7",
+    "@types/node": "^26.6.6",
+    "esbuild": "^0.28.2",
+    "pdf-lib": "^1.17.1",
+    "playwright": "^1.65.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "bin": {
+    "walled-dlp": "dist/agent/cli.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
