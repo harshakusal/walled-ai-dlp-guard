@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Walled DLP Guard",
+  "short_name": "Walled DLP",
+  "version": "1.0.0",
+  "description": "Browser sensor for the Walled DLP Guard desktop agent: inspects prompts and file uploads on ChatGPT and Perplexity and recolours AI responses.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwJykchWYVqje+12aaARJ9Z8nfMTL71um7YNF7Lhoc1jWqxx6XbE2UL1yEEve1/Dzyv5Jx7nYyq8EHjNmJJNb/QwR4/pCmACFsdrTEMd9FJ1bHpRhayWO2Dc4mH/dCYjq3cFVAf4EIVGmx/Ujv79DocpGxE7f9O3Xhb4Oho1UQfr5MehLwTvO7XNeJ4XZz2/+w6IFywfxaKFhS3dGgD5R72brnB+f1X5ZDYmorDAnhUV4TmKU0jEvTFIC6ApKD4EsGq80QmD8uIxdnEGfUoJP/snO0tk63DHsHlKRsaK/zr8G8dRmaAN0K4PUNdRG8909wsuVUbdD5TrnaTljMotFrwIDAQAB",
+  "minimum_chrome_version": "116",
+  "permissions": ["nativeMessaging", "storage"],
+  "host_permissions": ["https://chatgpt.com/*", "https://*.chatgpt.com/*", "https://chat.openai.com/*", "https://www.perplexity.ai/*", "https://perplexity.ai/*"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "content_scripts": [
+    {
+      "matches": ["https://chatgpt.com/*", "https://*.chatgpt.com/*", "https://chat.openai.com/*", "https://www.perplexity.ai/*", "https://perplexity.ai/*"],
+      "js": ["content.js"],
+      "css": ["response-color.css"],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ],
+  "action": { "default_title": "Walled DLP Guard", "default_popup": "popup.html", "default_icon": { "16": "icons/16.png", "32": "icons/32.png", "48": "icons/48.png" } },
+  "icons": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" }
+}

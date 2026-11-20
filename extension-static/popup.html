@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    body { font: 13px/1.4 system-ui, sans-serif; width: 300px; margin: 0; padding: 14px; color: #1f2937; }
+    h1 { font-size: 15px; margin: 0 0 10px; }
+    .row { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; }
+    .ok { color: #047857; font-weight: 600; } .bad { color: #b91c1c; font-weight: 600; }
+    small { color: #6b7280; }
+    button { font: inherit; padding: 4px 10px; }
+  </style>
+</head>
+<body>
+  <h1>Walled DLP Guard</h1>
+  <div class="row"><span>Desktop agent</span><span id="agent">checking…</span></div>
+  <div class="row"><span>Dialog</span><small id="backend">–</small></div>
+  <div class="row"><span>Marker</span><code id="marker">–</code></div>
+  <div class="row"><label for="light">Response colour (light)</label><input type="color" id="light" /></div>
+  <div class="row"><label for="dark">Response colour (dark)</label><input type="color" id="dark" /></div>
+  <div class="row"><button id="reset">Use agent colours</button><button id="test">Test dialog</button></div>
+  <small id="msg"></small>
+  <script src="popup.js" type="module"></script>
+</body>
+</html>
