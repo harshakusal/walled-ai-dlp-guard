@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { DEFAULT_MARKER } from '../shared/marker.js';
+import { DEFAULT_MARKER } from './marker.js';
 
 export interface Config {
   /** Sensitive marker to look for. */
@@ -12,6 +12,8 @@ export interface Config {
   ocrPdfPages: number;
   /** What to do when a file cannot be parsed (corrupt / unsupported) and no marker was found. */
   onInspectionError: 'ask' | 'allow' | 'block';
+  /** Files larger than this are not inspected; the user is asked instead. */
+  maxInspectMB: number;
   /** AI response text colour on ChatGPT / Perplexity. */
   responseColor: { light: string; dark: string };
 }
@@ -21,6 +23,7 @@ export const DEFAULTS: Config = {
   dialogTimeoutSec: 120,
   ocrPdfPages: 5,
   onInspectionError: 'ask',
+  maxInspectMB: 100,
   responseColor: { light: '#c2410c', dark: '#fdba74' },
 };
 
@@ -34,4 +37,14 @@ export function loadConfig(): Config {
   } catch {
     return { ...DEFAULTS };
   }
+}
+
+/** Persists a partial change (e.g. the response colour picked in the toolbar). */
+export function saveConfig(patch: Partial<Config>): Config {
+  let current: Partial<Config> = {};
+  try { current = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')) as Partial<Config>; } catch { /* new file */ }
+  const next = { ...current, ...patch };
+  fs.mkdirSync(HOME_DIR, { recursive: true, mode: 0o700 });
+  fs.writeFileSync(CONFIG_PATH, JSON.stringify(next, null, 2) + '\n', { mode: 0o600 });
+  return loadConfig();
 }

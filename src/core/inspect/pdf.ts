@@ -1,4 +1,4 @@
-import { containsMarkerLoose } from '../../shared/marker.js';
+import { containsMarkerLoose } from '../marker.js';
 import { createCanvas } from '@napi-rs/canvas';
 import { ocrFindMarker } from './ocr.js';
 

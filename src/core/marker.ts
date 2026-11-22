@@ -1,6 +1,6 @@
 /**
- * Marker detection shared by the browser extension (fast, synchronous check on
- * prompts) and the desktop agent (authoritative check on prompts and files).
+ * Marker detection shared by the in-page guard (fast, synchronous check on
+ * prompts) and the main process (authoritative check on prompts and files).
  *
  * Three levels of strictness:
  *  - containsMarker:          prompts / text files. Unicode-normalised, case-insensitive,

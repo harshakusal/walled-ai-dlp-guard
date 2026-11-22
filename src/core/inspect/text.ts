@@ -1,4 +1,4 @@
-import { containsMarker } from '../../shared/marker.js';
+import { containsMarker } from '../marker.js';
 
 /** Decode a text file honouring BOMs (UTF-8, UTF-16 LE/BE); default UTF-8. */
 export function decodeText(buf: Uint8Array): string {

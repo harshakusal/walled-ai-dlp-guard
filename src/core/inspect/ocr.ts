@@ -1,7 +1,7 @@
 import { createRequire } from 'node:module';
 import { createWorker, PSM, type Worker } from 'tesseract.js';
 import { createCanvas, loadImage } from '@napi-rs/canvas';
-import { findMarkerFuzzy, type FuzzyMatch } from '../../shared/marker.js';
+import { findMarkerFuzzy, type FuzzyMatch } from '../marker.js';
 
 const require = createRequire(import.meta.url);
 
