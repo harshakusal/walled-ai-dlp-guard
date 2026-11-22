@@ -4,7 +4,8 @@
  * where the composer is. Each list has generic fallbacks so a markup change on
  * either site degrades gracefully instead of silently disabling the guard.
  */
-import type { Site } from '../shared/protocol.js';
+import type { Site } from '../../core/types.js';
+export { detectSite } from '../../core/sites.js';
 
 export interface SiteAdapter {
   site: Site;
@@ -26,12 +27,6 @@ export const ADAPTERS: Record<Exclude<Site, 'unknown'>, SiteAdapter> = {
     sendButtonSelectors: ['button[data-testid="submit-button"]', 'button[aria-label="Submit"]', 'button[aria-label="Send"]'],
   },
 };
-
-export function detectSite(hostname: string): Site {
-  if (/(^|\.)chatgpt\.com$|(^|\.)chat\.openai\.com$/.test(hostname)) return 'chatgpt';
-  if (/(^|\.)perplexity\.ai$/.test(hostname)) return 'perplexity';
-  return 'unknown';
-}
 
 const SEND_LABEL = /\b(send|submit)\b/i;
 const NOT_SEND = /(feedback|dismiss|close|cancel|stop|share|report|edit)/i;

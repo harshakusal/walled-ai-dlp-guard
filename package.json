@@ -1,13 +1,18 @@
 {
   "name": "walled-ai-dlp-guard",
-  "version": "1.0.0",
-  "description": "Walled DLP Guard: desktop DLP for ChatGPT and Perplexity (prompt + file upload inspection with native confirmation dialogs)",
+  "version": "2.0.0",
+  "description": "Walled DLP Guard: a standalone desktop DLP app (Electron) for ChatGPT and Perplexity web \u2013 inspects prompts and text/PDF/image uploads for WALLED_SENSITIVE and asks with a native Continue/Cancel dialog",
   "scripts": {
-    "build": "tsc -p tsconfig.json && node scripts/build-extension.mjs",
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.json && tsc -p tsconfig.renderer.json && node scripts/build-app.mjs",
+    "start": "npm run build && electron .",
     "test": "npm run build && node --test tests/*.test.mjs",
-    "install-host": "node dist/agent/cli.js install",
+    "test:e2e": "npm run build && node --test tests/e2e/app.e2e.mjs",
     "fixtures": "node scripts/make-fixtures.mjs",
-    "test:e2e": "npm run build && node --test tests/e2e/extension.e2e.mjs"
+    "scan": "node dist/cli.js scan",
+    "audit": "node dist/cli.js audit",
+    "dist:linux": "npm run build && electron-builder --linux AppImage",
+    "dist:mac": "npm run build && electron-builder --mac dmg",
+    "dist:win": "npm run build && electron-builder --win nsis"
   },
   "license": "MIT",
   "type": "module",
@@ -18,8 +23,9 @@
     "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
-    "@types/chrome": "^0.3.7",
     "@types/node": "^26.6.6",
+    "electron": "^45.4.1",
+    "electron-builder": "^26.18.0",
     "esbuild": "^0.28.2",
     "pdf-lib": "^1.17.1",
     "playwright": "^1.65.1",
@@ -27,9 +33,59 @@
     "typescript": "^7.0.2"
   },
   "bin": {
-    "walled-dlp": "dist/agent/cli.js"
+    "walled-dlp": "dist/cli.js"
   },
   "engines": {
     "node": ">=20"
+  },
+  "main": "dist/app/main/main.js",
+  "author": {
+    "name": "Harsha Vardhan Ramisetty",
+    "email": "harshakusalmayuri@gmail.com"
+  },
+  "homepage": "https://github.com/harshakusal/walled-ai-dlp-guard",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/harshakusal/walled-ai-dlp-guard.git"
+  },
+  "build": {
+    "appId": "ai.walled.dlp-guard",
+    "productName": "Walled DLP Guard",
+    "artifactName": "Walled-DLP-Guard-${version}-${arch}.${ext}",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json",
+      "!**/*.map"
+    ],
+    "asarUnpack": [
+      "node_modules/tesseract.js/**",
+      "node_modules/tesseract.js-core/**",
+      "node_modules/@tesseract.js-data/**",
+      "node_modules/@napi-rs/**",
+      "node_modules/pdfjs-dist/**"
+    ],
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Utility",
+      "icon": "build/icon.png",
+      "executableName": "walled-dlp-guard"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
   }
 }
