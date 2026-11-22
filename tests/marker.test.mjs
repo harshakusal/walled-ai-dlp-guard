@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { containsMarker, containsMarkerLoose, findMarkerFuzzy, preview } from '../dist/shared/marker.js';
+import { containsMarker, containsMarkerLoose, findMarkerFuzzy, preview } from '../dist/core/marker.js';
 
 test('exact marker in a prompt', () => {
   assert.equal(containsMarker('please review WALLED_SENSITIVE data'), true);

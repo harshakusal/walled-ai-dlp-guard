@@ -4,8 +4,8 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { inspectFile } from '../dist/agent/inspect/index.js';
-import { shutdownOcr } from '../dist/agent/inspect/ocr.js';
+import { inspectFile } from '../dist/core/inspect/index.js';
+import { shutdownOcr } from '../dist/core/inspect/ocr.js';
 
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'wdlp-fixtures-'));
 execFileSync(process.execPath, ['scripts/make-fixtures.mjs', dir], { stdio: 'ignore' });
