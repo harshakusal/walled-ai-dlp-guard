@@ -1,5 +1,5 @@
 // Minimal stand-ins for the ChatGPT and Perplexity UIs, served on the real origins
-// (via Playwright request routing) so the app treats them exactly like the real sites.
+// (intercepted in the app's main process with protocol.handle) so the app treats them exactly like the real sites.
 // They reproduce what matters for interception: a rich-text composer whose Enter
 // key / send button submit through the page's own handlers, a file input, a drop
 // zone and paste handling - all wired the way React apps do it (bubble-phase listeners).

@@ -45,9 +45,15 @@ test.before(async () => {
       WALLED_DLP_START_URLS: JSON.stringify({ chatgpt: 'about:blank#chatgpt', perplexity: 'about:blank#perplexity' }),
     },
   });
-  const ctx = app.context();
-  await ctx.route('https://chatgpt.com/**', (r) => r.fulfill({ contentType: 'text/html', body: CHATGPT }));
-  await ctx.route('https://www.perplexity.ai/**', (r) => r.fulfill({ contentType: 'text/html', body: PERPLEXITY }));
+  // Serve the mock pages on the real origins from inside the app's main process
+  // (protocol.handle intercepts https for the session; everything else is passed through).
+  await app.evaluate(({ session, net }, mocks) => {
+    session.defaultSession.protocol.handle('https', (req) => {
+      const host = new URL(req.url).hostname;
+      if (mocks[host]) return new Response(mocks[host], { headers: { 'content-type': 'text/html; charset=utf-8' } });
+      return net.fetch(req, { bypassCustomProtocolHandlers: true });
+    });
+  }, { 'chatgpt.com': CHATGPT, 'www.perplexity.ai': PERPLEXITY });
   const deadline = Date.now() + 20000;
   while (Date.now() < deadline && !(pages.chatgpt && pages.perplexity && pages.toolbar)) {
     for (const w of app.windows()) {
